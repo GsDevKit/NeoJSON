@@ -57,7 +57,7 @@ EXAMPLES
 -----
 %
 doit
-	| projectName componentName commonPackageNames pharo6PackageNames definedProject pharoComponent testPackageNames testsComponent |
+	| projectName componentName commonPackageNames pharoPackageNames definedProject pharoComponent testPackageNames testsComponent |
 
 	projectName := 'NeoJSON'.
 	componentName := 'Core'.
@@ -87,7 +87,7 @@ doit
 		specsPath: 'gs/rowan/specs';
 		projectsPath: 'gs/rowan/projects';
 		projectSpecFile: 'gs/rowan/project.ston';
-		packagesPath: 'src';
+		packagesPath: 'repository';
 		componentsPath: 'gs/rowan/components';
 		yourself.
 	definedProject addTopLevelComponentNamed: componentName.

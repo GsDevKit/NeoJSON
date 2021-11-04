@@ -58,7 +58,7 @@ EXAMPLES
 specs
 [
 RwLoadSpecificationV2 {
-	#projectName : 'DataFrame',
+	#projectName : 'NeoJSON',
 	#projectSpecFile : 'gs/rowan/project.ston',
 	#componentNames : [
 		'Core'
@@ -74,11 +74,10 @@ RwLoadSpecificationV2 {
 		}
 	},
 	#comment : ''
-}
-]
+}]
 %
 doit
 	self preDoitSpecLoad. "load the DataFrame project using spec"
-	self stdout nextPutAll: 'RowanSample1 project loaded'; lf.
+	self stdout nextPutAll: 'NeoJSON project loaded'; lf.
 	^ System commit
 %
