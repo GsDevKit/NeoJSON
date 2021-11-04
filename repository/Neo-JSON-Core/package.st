@@ -1,1 +1,1 @@
-Package { #name : #'Neo-JSON-Core' }
+Package { #name : 'Neo-JSON-Core' }

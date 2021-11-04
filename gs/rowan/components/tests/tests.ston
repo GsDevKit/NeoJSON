@@ -1,0 +1,10 @@
+RwSimpleNestedProjectLoadComponentV2 {
+	#name : 'tests/tests',
+	#condition : 'tests',
+	#projectNames : [ ],
+	#componentNames : [ ],
+	#packageNames : [
+		'Neo-JSON-Tests'
+	],
+	#comment : ''
+}
