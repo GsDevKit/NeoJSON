@@ -1,0 +1,11 @@
+RwProjectSpecificationV2 {
+	#specName : 'project',
+	#projectSpecPath : 'gs/rowan',
+	#componentsPath : 'gs/rowan/components',
+	#packagesPath : 'repository',
+	#projectsPath : 'gs/rowan/projects',
+	#specsPath : 'gs/rowan/specs',
+	#packageFormat : 'tonel',
+	#packageConvention : 'Monticello',
+	#comment : ''
+}

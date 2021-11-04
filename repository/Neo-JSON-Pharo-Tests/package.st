@@ -1,1 +1,1 @@
-Package { #name : #'Neo-JSON-Pharo-Tests' }
+Package { #name : 'Neo-JSON-Pharo-Tests' }

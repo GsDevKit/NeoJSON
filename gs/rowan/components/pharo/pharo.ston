@@ -1,0 +1,12 @@
+RwSimpleNestedProjectLoadComponentV2 {
+	#name : 'pharo/pharo',
+	#condition : 'pharo',
+	#projectNames : [ ],
+	#componentNames : [ ],
+	#packageNames : [
+		'Neo-JSON-Pharo-Core',
+		'Neo-JSON-Pharo-Examples',
+		'Neo-JSON-Pharo-Tests'
+	],
+	#comment : ''
+}
