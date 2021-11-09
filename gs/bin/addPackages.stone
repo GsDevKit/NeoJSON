@@ -67,13 +67,6 @@ instvars
 definedProject
 %
 method
-writeAndReloadProjectV3
-	| resolvedProject |
-	resolvedProject := definedProject resolveProject.
-	resolvedProject export.
-	^ resolvedProject loadAsDefined.
-%
-method
 writeAndReloadProject
 	| resolvedProject |
 	resolvedProject := (RwResolvedProject newNamed: definedProject name)
@@ -93,35 +86,6 @@ doit
 	projectName := packages removeFirst.
 	componentName := packages removeFirst.
 	condition := packages removeFirst.
-Rowan version = (RwSemanticVersionNumber fromString: '3.0.0')
-ifTrue: [
- 	definedProject := (Rowan projectNamed: projectName) defined.
-	definedProject
-		componentNamed: componentName 
-		ifAbsent: [
-			definedProject
-				addPlatformSubcomponentNamed: componentName 
-				condition: { condition } 
-				comment: '' ].
-	(definedProject componentNamed: self componentName) addComponentNamed: componentName.
-	command = 'addpackage'
-		ifTrue: [
-			self symbolDictName
-				ifNotNil: [:symbolDictName |
-					packages do: [:packageName |
-						definedProject 
-							addPackageNamed: packageName 
-							toComponentNamed: componentName
-							gemstoneDefaultSymbolDictionaryForUser: (System myUserProfile userId -> symbolDictName) ] ]
-				ifNil: [
-					packages do: [:packageName |
-						definedProject 
-							addPackageNamed: packageName 
-							toComponentNamed: componentName ] ].
-				self writeAndReloadProjectV3 ].
-				^ System commit.
-]
-ifFalse: [
 	definedProject := (Rowan projectNamed: projectName) defined.
 	definedProject := definedProject resolve defined. "yeah, I know..."
 	components := definedProject _resolvedProject _projectDefinition components.
@@ -147,7 +111,7 @@ ifFalse: [
 						definedProject 
 							addPackageNamed: packageName 
 							toComponentNamed: componentName ] ].
-				self writeAndReloadProject ].
+				self writeAndReloadProject.
 				^ System commit ].
 	self error: 'Unknown command ', command printString.
 	^ self noResult
