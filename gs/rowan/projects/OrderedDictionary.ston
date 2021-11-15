@@ -1,8 +1,8 @@
 RwLoadSpecificationV2 {
-	#projectName : 'NeoJSON',
-	#gitUrl : 'git@github.com:GsDevKit/NeoJSON.git',
-	#revision : 'rowan_master',
-	#projectSpecFile : 'gs/rowan/project.ston',
+	#projectName : 'OrderedDictionary',
+	#gitUrl : 'git@github.com:GsDevKit/OrderedDictionary.git',
+	#revision : 'github-ci',
+	#projectSpecFile : 'rowan/project.ston',
 	#componentNames : [
 		'Core'
 	],
