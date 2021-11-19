@@ -61,6 +61,9 @@ EXAMPLES
   $basename --copy methodDef Object foo Neo-JSON-Core Neo-JSON-GemStone-Core
   $basename classMethodDef Object bar Neo-JSON-Core Neo-JSON-GemStone-Core
   $basename class NeoJSONObject Neo-JSON-Core Neo-JSON-GemStone-Core
+
+  ./addPackages.stone -D addPackage NeoJSON platform/gs3.6- gs3.[6-] Neo-JSON-GemStone-Tests --symbolDictName=Globals
+  ./moveDefinitionsBetweenPackages.stone -D methodDef NeoJSONFloatPrinterTests testDecimalNotation Neo-JSON-Tests Neo-JSON-GemStone-Tests
 -----
 %
 instvars
@@ -76,18 +79,18 @@ extractPackageNames: startingAt
 method
 readPackagesFromDisk
 ^	Rowan 
-		projectFromUrl: 'file:$ROWAN_PROJECTS_HOME/DataFrame/gs/rowan/specs/DataFrame.ston'
+		projectFromUrl: 'file:$ROWAN_PROJECTS_HOME/NeoJSON/gs/rowan/specs/NeoJSON.ston'
 			projectsHome: '$ROWAN_PROJECTS_HOME'
 			componentNames: #('Core') 
 			customConditionalAttributes: #( 'tests' 'pharo' 'gemstone' ).
 %
 method
 fromPackage
-	^ resolvedProject packageNamed: fromPackageName
+	^ resolvedProject _resolvedProject packageNamed: fromPackageName
 %
 method
 toPackage
-	^ resolvedProject packageNamed: toPackageName
+	^ resolvedProject _resolvedProject packageNamed: toPackageName
 %
 method
 copyClass: className
@@ -123,8 +126,8 @@ moveMethod: className selector: selector isMeta: isMeta
 	| classDef methodDef |
 	classDef := self fromPackage classDefinitionNamed: className.
 	methodDef := isMeta
-		ifTrue: [ classDef removeClassMethodDefinition: selector asSymbol ]
-		ifFalse: [ classDef removeInstanceMethodDefinition: selector asSymbol].
+		ifTrue: [ classDef removeClassMethod: selector asSymbol ]
+		ifFalse: [ classDef removeInstanceMethod: selector asSymbol].
 	classDef := self toPackage classDefinitionNamed: className.
 	self addMethod: methodDef toClassNamed: className isMeta: isMeta
 %
