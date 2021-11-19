@@ -1,7 +1,7 @@
 #!/usr/bin/env superdoit_stone
 # Standard options are always present unless customoptions section is used
 #
-#options
+options
 {
   SuperDoitOptionalOptionWithNoArg long: 'copy'.
 }
@@ -91,28 +91,28 @@ toPackage
 %
 method
 copyClass: className
-	| classDef |
-	classDef := fromPackage classDefinitionNamed:: className.
+	| classDef classDefCopy |
+	classDef := self fromPackage classDefinitionNamed: className.
 	classDefCopy := classDef copy.
-	toPackage addClassDefinition: classDefCopy
+	self toPackage addClassDefinition: classDefCopy
 %
 method
 moveClass: className
-	fromPackage 
+	self fromPackage 
 		moveClassNamed: className
 		modifyClassDefinition: [:classDef |
 			| convention |
 			convention := resolvedProject packageConvention.
 			(convention = 'RowanHybrid' or: [ convention = 'Monticello' ])
 				ifTrue: [
-					classDef category: toPackage name ]
+					classDef category: self toPackage name ]
 				ifFalse: [ "assume Rowan - noop" ] ]
-		toPackage: toPackage
+		toPackage: self toPackage
 %
 method
 copyMethod: className selector: selector isMeta: isMeta
-	| classDef convention |
-	classDef := fromPackage classDefinitionNamed:: className.
+	| classDef methodDef |
+	classDef := self fromPackage classDefinitionNamed: className.
 	methodDef := ((isMeta
 		ifTrue: [ classDef classMethodDefinitions ]
 		ifFalse: [ classDef instanceMethodDefinitions ]) at: selector asSymbol) copy.
@@ -120,22 +120,23 @@ copyMethod: className selector: selector isMeta: isMeta
 %
 method
 moveMethod: className selector: selector isMeta: isMeta
-	| classDef |
-	classDef := fromPackage classDefinitionNamed:: className.
+	| classDef methodDef |
+	classDef := self fromPackage classDefinitionNamed: className.
 	methodDef := isMeta
 		ifTrue: [ classDef removeClassMethodDefinition: selector asSymbol ]
 		ifFalse: [ classDef removeInstanceMethodDefinition: selector asSymbol].
-	classDef := toPackage classDefinitionNamed: className.
+	classDef := self toPackage classDefinitionNamed: className.
 	self addMethod: methodDef toClassNamed: className isMeta: isMeta
 %
 method
 addMethod: methodDef toClassNamed: className isMeta: isMeta
-	classDef := toPackage classDefinitionNamed: className.
+	| classDef convention |
+	classDef := self toPackage classDefinitionNamed: className.
 	classDef isClassExtension
 		ifTrue: [ 
 			convention := resolvedProject packageConvention.
 			(convention = 'RowanHybrid' or: [ convention = 'Monticello' ])
-				ifTrue: [ methodDef protocol: '*', toPackage name asLowerCase ]
+				ifTrue: [ methodDef protocol: '*', self toPackage name asLowerCase ]
 				ifFalse: [ "assume Rowan - noop" ] ].	
 	isMeta
 		ifTrue: [ classDef addClassMethodDefinition: methodDef copy ]
@@ -166,5 +167,6 @@ doit
 			self copy
 				ifTrue: [ self copyMethod: className selector: selector isMeta: isMeta ]
 				ifFalse: [ self moveMethod: className selector: selector isMeta: isMeta ] ].
+	resolvedProject write.
 	^ self noResult
 %
