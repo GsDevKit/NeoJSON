@@ -4,6 +4,7 @@
 options
 {
   SuperDoitOptionalOptionWithNoArg long: 'copy'.
+  SuperDoitOptionalOptionWithRequiredArg long: 'category'.
 }
 %
 # Example options section
@@ -41,8 +42,12 @@ DESCRIPTION
   classDef <from-package> <to-package> <class-name>
     move the named class definition from <from-package> to <to-package>
 
-	If the --copy option is included, then the metod or class definition is copied to the package
-  instead of moved.
+  If the --copy option is included, then the method or class definition is 
+  copied to the package instead of moved.
+
+  If the --category option is included, the method is moved/copied into a
+  protocol of the given name and the moved/copied class definition's category
+  is set to the given name
 
 OPTIONS
   <stone-name>               Name of the GsDevKit_home stone. <stone-name> argument
@@ -64,8 +69,8 @@ EXAMPLES
 
   ./addPackages.stone -D addPackage NeoJSON platform/gs3.6- gs3.[6-] Neo-JSON-GemStone-Tests --symbolDictName=Globals
   ./moveDefinitionsBetweenPackages.stone -D methodDef NeoJSONFloatPrinterTests testDecimalNotation Neo-JSON-Tests Neo-JSON-GemStone-Tests
-
   ./moveDefinitionsBetweenPackages.stone -D --copy methodDef NeoJSONFloatPrinterTests testDecimalNotation Neo-JSON-GemStone-Tests Neo-JSON-Pharo-Tests 
+  ./moveDefinitionsBetweenPackages.stone -D --category=tests methodDef NeoJSONFloatPrinterTests testDecimalNotation Neo-JSON-Pharo-Tests Neo-JSON-Tests
 -----
 %
 instvars
@@ -138,7 +143,7 @@ copyMethod: className selector: selector isMeta: isMeta
 method
 moveMethod: className selector: selector isMeta: isMeta
 	| classDef methodDef |
-	classDef := self fromPackage classDefinitionNamed: className.
+	classDef := self classOrExtensionDefNamed: className for: self fromPackage create: false.
 	methodDef := isMeta
 		ifTrue: [ classDef removeClassMethod: selector asSymbol ]
 		ifFalse: [ classDef removeInstanceMethod: selector asSymbol].
@@ -150,12 +155,15 @@ method
 addMethod: methodDef toClassNamed: className isMeta: isMeta
 	| classDef convention |
 	classDef := self classOrExtensionDefNamed: className for: self toPackage create: true.
-	classDef isClassExtension
-		ifTrue: [ 
-			convention := resolvedProject _resolvedProject packageConvention.
-			(convention = 'RowanHybrid' or: [ convention = 'Monticello' ])
-				ifTrue: [ methodDef protocol: '*', self toPackage name asLowercase ]
-				ifFalse: [ "assume Rowan - noop" ] ].	
+	self category
+		ifNil: [ 
+			classDef isClassExtension
+				ifTrue: [ 
+					convention := resolvedProject _resolvedProject packageConvention.
+					(convention = 'RowanHybrid' or: [ convention = 'Monticello' ])
+						ifTrue: [ methodDef protocol: '*', self toPackage name asLowercase ]
+						ifFalse: [ "assume Rowan - noop" ] ] ]
+		ifNotNil: [:protocol | methodDef protocol: protocol ].	
 	isMeta
 		ifTrue: [ classDef addClassMethodDefinition: methodDef copy ]
 		ifFalse: [ classDef addInstanceMethodDefinition: methodDef copy ]
