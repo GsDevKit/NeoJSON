@@ -64,6 +64,8 @@ EXAMPLES
 
   ./addPackages.stone -D addPackage NeoJSON platform/gs3.6- gs3.[6-] Neo-JSON-GemStone-Tests --symbolDictName=Globals
   ./moveDefinitionsBetweenPackages.stone -D methodDef NeoJSONFloatPrinterTests testDecimalNotation Neo-JSON-Tests Neo-JSON-GemStone-Tests
+
+  ./moveDefinitionsBetweenPackages.stone -D --copy methodDef NeoJSONFloatPrinterTests testDecimalNotation Neo-JSON-GemStone-Tests Neo-JSON-Pharo-Tests 
 -----
 %
 instvars
@@ -127,7 +129,7 @@ moveClass: className
 method
 copyMethod: className selector: selector isMeta: isMeta
 	| classDef methodDef |
-	classDef := self fromPackage classDefinitionNamed: className.
+	classDef := self classOrExtensionDefNamed: className for: self fromPackage create: false.
 	methodDef := ((isMeta
 		ifTrue: [ classDef classMethodDefinitions ]
 		ifFalse: [ classDef instanceMethodDefinitions ]) at: selector asSymbol) copy.
