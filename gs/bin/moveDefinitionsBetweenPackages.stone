@@ -93,6 +93,18 @@ toPackage
 	^ resolvedProject _resolvedProject packageNamed: toPackageName
 %
 method
+classOrExtensionDefNamed: className for: aPackage create: createBool
+	^ aPackage 
+		classDefinitionNamed: className
+		ifAbsent: [
+			aPackage 
+				classExtensionDefinitionNamed: className
+				ifAbsent: [
+					createBool ifFalse: [ self error: 'No class definition for ', className printString, ' found.'].
+					aPackage
+						addClassExtensionNamed: className ] ].
+%
+method
 copyClass: className
 	| classDef classDefCopy |
 	classDef := self fromPackage classDefinitionNamed: className.
@@ -105,7 +117,7 @@ moveClass: className
 		moveClassNamed: className
 		modifyClassDefinition: [:classDef |
 			| convention |
-			convention := resolvedProject packageConvention.
+			convention := resolvedProject _resolvedProject packageConvention.
 			(convention = 'RowanHybrid' or: [ convention = 'Monticello' ])
 				ifTrue: [
 					classDef category: self toPackage name ]
@@ -128,18 +140,19 @@ moveMethod: className selector: selector isMeta: isMeta
 	methodDef := isMeta
 		ifTrue: [ classDef removeClassMethod: selector asSymbol ]
 		ifFalse: [ classDef removeInstanceMethod: selector asSymbol].
-	classDef := self toPackage classDefinitionNamed: className.
+	"ensure that a class def or class extension def exists in target package"
+	self classOrExtensionDefNamed: className for: self toPackage create: true.
 	self addMethod: methodDef toClassNamed: className isMeta: isMeta
 %
 method
 addMethod: methodDef toClassNamed: className isMeta: isMeta
 	| classDef convention |
-	classDef := self toPackage classDefinitionNamed: className.
+	classDef := self classOrExtensionDefNamed: className for: self toPackage create: true.
 	classDef isClassExtension
 		ifTrue: [ 
-			convention := resolvedProject packageConvention.
+			convention := resolvedProject _resolvedProject packageConvention.
 			(convention = 'RowanHybrid' or: [ convention = 'Monticello' ])
-				ifTrue: [ methodDef protocol: '*', self toPackage name asLowerCase ]
+				ifTrue: [ methodDef protocol: '*', self toPackage name asLowercase ]
 				ifFalse: [ "assume Rowan - noop" ] ].	
 	isMeta
 		ifTrue: [ classDef addClassMethodDefinition: methodDef copy ]
