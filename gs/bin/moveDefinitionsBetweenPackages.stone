@@ -105,31 +105,52 @@ classOrExtensionDefNamed: className for: aPackage create: createBool
 		classDefinitionNamed: className
 		ifAbsent: [
 			aPackage 
-				classExtensionDefinitionNamed: className
+				classDefinitionNamed: className asSymbol
 				ifAbsent: [
-					createBool ifFalse: [ self error: 'No class definition for ', className printString, ' found.'].
-					aPackage
-						addClassExtensionNamed: className ] ].
+					aPackage 
+						classExtensionDefinitionNamed: className
+						ifAbsent: [
+							aPackage
+								classExtensionDefinitionNamed: className asSymbol
+								ifAbsent: [
+									createBool ifFalse: [ self error: 'No class definition for ', className printString, ' found.'].
+									aPackage
+										addClassExtensionNamed: className asString ] ] ] ].
+%
+method
+changeMethodProtocol: protocol for: classDef
+	classDef instanceMethodDefinitions do: [:m | m protocol: protocol ].
+	classDef classMethodDefinitions do: [:m | m protocol: protocol ].
 %
 method
 copyClass: className
-	| classDef classDefCopy |
-	classDef := self fromPackage classDefinitionNamed: className.
-	classDefCopy := classDef copy.
-	self toPackage addClassDefinition: classDefCopy
+	self halt: 'net yet implemented'
 %
 method
 moveClass: className
-	self fromPackage 
-		moveClassNamed: className
-		modifyClassDefinition: [:classDef |
-			| convention |
-			convention := resolvedProject _resolvedProject packageConvention.
-			(convention = 'RowanHybrid' or: [ convention = 'Monticello' ])
-				ifTrue: [
-					classDef category: self toPackage name ]
-				ifFalse: [ "assume Rowan - noop" ] ]
-		toPackage: self toPackage
+	| classDef methodDef convention |
+	classDef := self classOrExtensionDefNamed: className for: self fromPackage create: false.
+	classDef isClassExtension
+		ifTrue: [ 
+			self fromPackage removeClassExtensionDefinition: classDef.
+		self category
+			ifNil: [ 
+						convention := resolvedProject _resolvedProject packageConvention.
+						(convention = 'RowanHybrid' or: [ convention = 'Monticello' ])
+							ifTrue: [ self changeMethodProtocol: '*', self toPackage name asLowercase for: classDef ]
+							ifFalse: [ "assume Rowan - noop" ] ]
+			ifNotNil: [:protocol | self changeMethodProtocol: protocol for: classDef ]. 
+		self toPackage addClassExtensionDefinition: classDef ]
+		ifFalse: [ 
+			self fromPackage removeClassDefinition: classDef.
+			self category
+				ifNil: [ 
+						convention := resolvedProject _resolvedProject packageConvention.
+						(convention = 'RowanHybrid' or: [ convention = 'Monticello' ])
+							ifTrue: [ classDef category: self toPackage name ]
+							ifFalse: [ "assume Rowan - noop" ] ]
+				ifNotNil: [:category | classDef category: category ].			
+			self toPackage addClassDefinition: classDef ].
 %
 method
 copyMethod: className selector: selector isMeta: isMeta
@@ -173,7 +194,7 @@ doit
 	resolvedProject := self readPackagesFromDisk.
 	command := self positionalArgs at: 1.
 	className := self positionalArgs at: 2.
-	command = 'class'
+	command = 'classDef'
 		ifTrue: [ 
 			self extractPackageNames: 3.
 			self copy
