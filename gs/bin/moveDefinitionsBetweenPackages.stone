@@ -67,10 +67,14 @@ EXAMPLES
   $basename classMethodDef Object bar Neo-JSON-Core Neo-JSON-GemStone-Core
   $basename class NeoJSONObject Neo-JSON-Core Neo-JSON-GemStone-Core
 
-  ./addPackages.stone -D addPackage NeoJSON platform/gs3.6- gs3.[6-] Neo-JSON-GemStone-Tests --symbolDictName=Globals
+  ./addPackages.stone -D addPackage NeoJSON gemstone/gemstone gemstone Neo-JSON-Core --symbolDictName=Globals
+  ./addPackages.stone -D addPackage NeoJSON gemstone/gemstone gemstone Neo-JSON-GemStone-Tests --symbolDictName=Globals
   ./moveDefinitionsBetweenPackages.stone -D methodDef NeoJSONFloatPrinterTests testDecimalNotation Neo-JSON-Tests Neo-JSON-GemStone-Tests
   ./moveDefinitionsBetweenPackages.stone -D --copy methodDef NeoJSONFloatPrinterTests testDecimalNotation Neo-JSON-GemStone-Tests Neo-JSON-Pharo-Tests 
   ./moveDefinitionsBetweenPackages.stone -D --category=tests methodDef NeoJSONFloatPrinterTests testDecimalNotation Neo-JSON-Pharo-Tests Neo-JSON-Tests
+  ./moveDefinitionsBetweenPackages.stone -D classDef Number Neo-JSON-Core Neo-JSON-GemStone-Core                      # class extension definition
+  ./moveDefinitionsBetweenPackages.stone -D classDef NeoJSONReader Neo-JSON-Core Neo-JSON-GemStone-Core               # class definition 
+  ./moveDefinitionsBetweenPackages.stone -D --copy classDef NeoJSONReader Neo-JSON-GemStone-Core Neo-JSON-Pharo-Core  # class definition
 -----
 %
 instvars
@@ -124,11 +128,31 @@ changeMethodProtocol: protocol for: classDef
 %
 method
 copyClass: className
-	self halt: 'net yet implemented'
+	| classDef  convention |
+	classDef := (self classOrExtensionDefNamed: className for: self fromPackage create: false) copy.
+	classDef isClassExtension
+		ifTrue: [ 
+			self category
+				ifNil: [ 
+					convention := resolvedProject _resolvedProject packageConvention.
+					(convention = 'RowanHybrid' or: [ convention = 'Monticello' ])
+						ifTrue: [ self changeMethodProtocol: '*', self toPackage name asLowercase for: classDef ]
+						ifFalse: [ "assume Rowan - noop" ] ]
+				ifNotNil: [:protocol | self changeMethodProtocol: protocol for: classDef ]. 
+		self toPackage addClassExtensionDefinition: classDef ]
+	ifFalse: [
+			self category
+				ifNil: [ 
+					convention := resolvedProject _resolvedProject packageConvention.
+					(convention = 'RowanHybrid' or: [ convention = 'Monticello' ])
+						ifTrue: [ classDef category: self toPackage name ]
+						ifFalse: [ "assume Rowan - noop" ] ]
+				ifNotNil: [:category | classDef category: category ]. 
+		self toPackage addClassDefinition: classDef ]
 %
 method
 moveClass: className
-	| classDef methodDef convention |
+	| classDef convention |
 	classDef := self classOrExtensionDefNamed: className for: self fromPackage create: false.
 	classDef isClassExtension
 		ifTrue: [ 
