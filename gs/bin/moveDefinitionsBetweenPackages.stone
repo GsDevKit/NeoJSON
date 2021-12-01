@@ -1,0 +1,243 @@
+#!/usr/bin/env superdoit_stone
+# Standard options are always present unless customoptions section is used
+#
+options
+{
+  SuperDoitOptionalOptionWithNoArg long: 'copy'.
+  SuperDoitOptionalOptionWithRequiredArg long: 'category'.
+}
+%
+# Example options section
+#
+#otions
+#{
+#	SuperDoitOptionalOptionWithNoArg long: 'noarg'.
+#	SuperDoitOptionalOptionWithNoArg long: 'noarg' short: 'n'.
+#
+#	SuperDoitOptionalOptionWithRequiredArg long: 'optional'.
+#	SuperDoitOptionalOptionWithRequiredArg long: 'optional' default: 'default'.
+#	SuperDoitOptionalOptionWithRequiredArg long: 'optional' short: 'o'.
+#	SuperDoitOptionalOptionWithRequiredArg long: 'optional' short: 'o' default: 'default'.
+#
+#	SuperDoitRequiredOptionWithRequiredArg long: 'required'.
+#	SuperDoitRequiredOptionWithRequiredArg long: 'required' short: 'r'.
+#}
+#%
+#
+usage
+-----
+USAGE
+      # with GS_HOME env var set
+      $basename [--help | -h] [--debug | -D] [-- [<stone-name> [<topaz-command-line-args>] ] ]
+      # with GEMSTONE env var set
+      $basename [--help | -h] [--debug | -D] --  -l -I <path-to-.topazini-file>
+
+DESCRIPTION
+  Script that moves methods, class definitions and class definitions with methods between packages.
+
+  methodDef <from-package> <to-package> <class-name> <selector>
+    move the named instance method definition from <from-package> to <to-package>
+  classMethodDef <from-package> <to-package> <class-name> <selector>
+    move the named class method definition from <from-package> to <to-package>
+  classDef <from-package> <to-package> <class-name>
+    move the named class definition from <from-package> to <to-package>
+
+  If the --copy option is included, then the method or class definition is 
+  copied to the package instead of moved.
+
+  If the --category option is included, the method is moved/copied into a
+  protocol of the given name and the moved/copied class definition's category
+  is set to the given name
+
+OPTIONS
+  <stone-name>               Name of the GsDevKit_home stone. <stone-name> argument
+                             may be skipped if the script is run in a GsDevKit_home
+                             stone directory (i.e., $GS_HOME/server/stones/<stone-name>
+  <topaz-command-line-args>  topaz options that should be passed to topaz when running
+                             running the script
+  -h, --help                 display usage message
+  -D, --debug                bring up topaz debugger in the event of a script error
+
+EXAMPLES
+  $basename -h -- rowan_361
+  $basename -h
+
+  $basename methodDef Object foo Neo-JSON-Core Neo-JSON-GemStone-Core
+  $basename --copy methodDef Object foo Neo-JSON-Core Neo-JSON-GemStone-Core
+  $basename classMethodDef Object bar Neo-JSON-Core Neo-JSON-GemStone-Core
+  $basename class NeoJSONObject Neo-JSON-Core Neo-JSON-GemStone-Core
+
+  ./addPackages.stone -D addPackage NeoJSON gemstone/gemstone gemstone Neo-JSON-Core --symbolDictName=Globals
+  ./addPackages.stone -D addPackage NeoJSON gemstone/gemstone gemstone Neo-JSON-GemStone-Tests --symbolDictName=Globals
+  ./moveDefinitionsBetweenPackages.stone -D methodDef NeoJSONFloatPrinterTests testDecimalNotation Neo-JSON-Tests Neo-JSON-GemStone-Tests
+  ./moveDefinitionsBetweenPackages.stone -D --copy methodDef NeoJSONFloatPrinterTests testDecimalNotation Neo-JSON-GemStone-Tests Neo-JSON-Pharo-Tests 
+  ./moveDefinitionsBetweenPackages.stone -D --category=tests methodDef NeoJSONFloatPrinterTests testDecimalNotation Neo-JSON-Pharo-Tests Neo-JSON-Tests
+  ./moveDefinitionsBetweenPackages.stone -D classDef Number Neo-JSON-Core Neo-JSON-GemStone-Core                      # class extension definition
+  ./moveDefinitionsBetweenPackages.stone -D classDef NeoJSONReader Neo-JSON-Core Neo-JSON-GemStone-Core               # class definition 
+  ./moveDefinitionsBetweenPackages.stone -D --copy classDef NeoJSONReader Neo-JSON-GemStone-Core Neo-JSON-Pharo-Core  # class definition
+-----
+%
+instvars
+resolvedProject
+fromPackageName
+toPackageName
+%
+method
+extractPackageNames: startingAt
+	fromPackageName := self positionalArgs at: startingAt.
+	toPackageName := self positionalArgs at: startingAt + 1.
+%
+method
+readPackagesFromDisk
+^	Rowan 
+		projectFromUrl: 'file:$ROWAN_PROJECTS_HOME/NeoJSON/gs/rowan/specs/NeoJSON.ston'
+			projectsHome: '$ROWAN_PROJECTS_HOME'
+			componentNames: #('Core') 
+			customConditionalAttributes: #( 'tests' 'pharo' 'gemstone' ).
+%
+method
+fromPackage
+	^ resolvedProject _resolvedProject packageNamed: fromPackageName
+%
+method
+toPackage
+	^ resolvedProject _resolvedProject packageNamed: toPackageName
+%
+method
+classOrExtensionDefNamed: className for: aPackage create: createBool
+	^ aPackage 
+		classDefinitionNamed: className
+		ifAbsent: [
+			aPackage 
+				classDefinitionNamed: className asSymbol
+				ifAbsent: [
+					aPackage 
+						classExtensionDefinitionNamed: className
+						ifAbsent: [
+							aPackage
+								classExtensionDefinitionNamed: className asSymbol
+								ifAbsent: [
+									createBool ifFalse: [ self error: 'No class definition for ', className printString, ' found.'].
+									aPackage
+										addClassExtensionNamed: className asString ] ] ] ].
+%
+method
+changeMethodProtocol: protocol for: classDef
+	classDef instanceMethodDefinitions do: [:m | m protocol: protocol ].
+	classDef classMethodDefinitions do: [:m | m protocol: protocol ].
+%
+method
+copyClass: className
+	| classDef  convention |
+	classDef := (self classOrExtensionDefNamed: className for: self fromPackage create: false) copy.
+	classDef isClassExtension
+		ifTrue: [ 
+			self category
+				ifNil: [ 
+					convention := resolvedProject _resolvedProject packageConvention.
+					(convention = 'RowanHybrid' or: [ convention = 'Monticello' ])
+						ifTrue: [ self changeMethodProtocol: '*', self toPackage name asLowercase for: classDef ]
+						ifFalse: [ "assume Rowan - noop" ] ]
+				ifNotNil: [:protocol | self changeMethodProtocol: protocol for: classDef ]. 
+		self toPackage addClassExtensionDefinition: classDef ]
+	ifFalse: [
+			self category
+				ifNil: [ 
+					convention := resolvedProject _resolvedProject packageConvention.
+					(convention = 'RowanHybrid' or: [ convention = 'Monticello' ])
+						ifTrue: [ classDef category: self toPackage name ]
+						ifFalse: [ "assume Rowan - noop" ] ]
+				ifNotNil: [:category | classDef category: category ]. 
+		self toPackage addClassDefinition: classDef ]
+%
+method
+moveClass: className
+	| classDef convention |
+	classDef := self classOrExtensionDefNamed: className for: self fromPackage create: false.
+	classDef isClassExtension
+		ifTrue: [ 
+			self fromPackage removeClassExtensionDefinition: classDef.
+		self category
+			ifNil: [ 
+						convention := resolvedProject _resolvedProject packageConvention.
+						(convention = 'RowanHybrid' or: [ convention = 'Monticello' ])
+							ifTrue: [ self changeMethodProtocol: '*', self toPackage name asLowercase for: classDef ]
+							ifFalse: [ "assume Rowan - noop" ] ]
+			ifNotNil: [:protocol | self changeMethodProtocol: protocol for: classDef ]. 
+		self toPackage addClassExtensionDefinition: classDef ]
+		ifFalse: [ 
+			self fromPackage removeClassDefinition: classDef.
+			self category
+				ifNil: [ 
+						convention := resolvedProject _resolvedProject packageConvention.
+						(convention = 'RowanHybrid' or: [ convention = 'Monticello' ])
+							ifTrue: [ classDef category: self toPackage name ]
+							ifFalse: [ "assume Rowan - noop" ] ]
+				ifNotNil: [:category | classDef category: category ].			
+			self toPackage addClassDefinition: classDef ].
+%
+method
+copyMethod: className selector: selector isMeta: isMeta
+	| classDef methodDef |
+	classDef := self classOrExtensionDefNamed: className for: self fromPackage create: false.
+	methodDef := ((isMeta
+		ifTrue: [ classDef classMethodDefinitions ]
+		ifFalse: [ classDef instanceMethodDefinitions ]) at: selector asSymbol) copy.
+	self addMethod: methodDef toClassNamed: className isMeta: isMeta
+%
+method
+moveMethod: className selector: selector isMeta: isMeta
+	| classDef methodDef |
+	classDef := self classOrExtensionDefNamed: className for: self fromPackage create: false.
+	methodDef := isMeta
+		ifTrue: [ classDef removeClassMethod: selector asSymbol ]
+		ifFalse: [ classDef removeInstanceMethod: selector asSymbol].
+	"ensure that a class def or class extension def exists in target package"
+	self classOrExtensionDefNamed: className for: self toPackage create: true.
+	self addMethod: methodDef toClassNamed: className isMeta: isMeta
+%
+method
+addMethod: methodDef toClassNamed: className isMeta: isMeta
+	| classDef convention |
+	classDef := self classOrExtensionDefNamed: className for: self toPackage create: true.
+	self category
+		ifNil: [ 
+			classDef isClassExtension
+				ifTrue: [ 
+					convention := resolvedProject _resolvedProject packageConvention.
+					(convention = 'RowanHybrid' or: [ convention = 'Monticello' ])
+						ifTrue: [ methodDef protocol: '*', self toPackage name asLowercase ]
+						ifFalse: [ "assume Rowan - noop" ] ] ]
+		ifNotNil: [:protocol | methodDef protocol: protocol ].	
+	isMeta
+		ifTrue: [ classDef addClassMethodDefinition: methodDef copy ]
+		ifFalse: [ classDef addInstanceMethodDefinition: methodDef copy ]
+%
+doit
+	| command className selector|
+	resolvedProject := self readPackagesFromDisk.
+	command := self positionalArgs at: 1.
+	className := self positionalArgs at: 2.
+	command = 'classDef'
+		ifTrue: [ 
+			self extractPackageNames: 3.
+			self copy
+				ifTrue: [ self copyClass: className ]
+				ifFalse: [ self moveClass: className ] ]
+		ifFalse: [
+			| isMeta |
+			selector := self positionalArgs at: 3.
+			self extractPackageNames: 4.
+			command = 'methodDef'
+				ifTrue: [ isMeta := false ]
+				ifFalse: [ 
+					command = 'classMethodDef'
+						ifTrue: [ isMeta := true ]
+						ifFalse: [
+							self error: 'Unknown command: ', command printString, '. Valid commands are class, methodDef, classMethodDef' ] ].
+			self copy
+				ifTrue: [ self copyMethod: className selector: selector isMeta: isMeta ]
+				ifFalse: [ self moveMethod: className selector: selector isMeta: isMeta ] ].
+	resolvedProject write.
+	^ self noResult
+%
