@@ -1,10 +1,15 @@
 #!/usr/bin/env superdoit_solo
+options
+{
+	SuperDoitOptionalOptionWithNoArg long: 'notPassing'.
+}
+%
 usage
 -----
 USAGE $basename [--help | -h] [--debug | -D]
 
 DESCRIPTION
-  <put your description here>
+  Run test suite for NeoJSON. Also used to run github ci runs.
 
 OPTIONS
   -h, --help                 display usage message
@@ -15,7 +20,8 @@ EXAMPLES
   $basename -h
   $basename --debug
   $basename -D
-  $basename  
+  $basename              # display detailed results for all tests
+  $basename --notPassing # display detailed results for only non passing tests 
 -----
 %
 specs
@@ -48,7 +54,9 @@ doit
 		loadSpec projectsHome: '$GITHUB_WORKSPACE/..' ].
 	testSuite := (Rowan projectNamed: projectName) testSuite.
 	runner := (Rowan globalNamed: 'GsTestStatsCITestRunner') runSuite: testSuite.
-	reporter := (Rowan globalNamed: 'GsTestStatsCITestReporterStdout') report: runner.
+	reporter := self notPassing
+		ifTrue: [ (Rowan globalNamed: 'GsTestStatsCITestReporterStdout') reportNotPassing: runner ]
+		ifFalse: [ (Rowan globalNamed: 'GsTestStatsCITestReporterStdout') report: runner ].
 	runner isSuccessful
 		ifFalse: [ self exitWithStatus: 1 ].
 	^ self noResult
