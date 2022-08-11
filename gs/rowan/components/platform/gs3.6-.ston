@@ -4,8 +4,7 @@ RwPlatformNestedProjectLoadComponentV2 {
 		'gs3.[6-]'
 	],
 	#packageNames : [
-		'Neo-JSON-GemStone36-',
-		'Neo-JSON-GemStone36--Tests'
+		'Neo-JSON-GemStone36-'
 	],
 	#comment : ''
 }
