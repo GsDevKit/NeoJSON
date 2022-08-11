@@ -1,0 +1,13 @@
+RwPlatformNestedProjectLoadComponentV2 {
+	#name : 'tests/platform/gs3.6-',
+	#condition : [
+		'gs3.[6-]'
+	],
+	#preloadDoitName : 'doits/platform/ensureSmalltalkGlobalExists',
+	#postloadDoitName : 'doits/platform/setupSmalltalkGlobal',
+	#packageNames : [
+		'Neo-JSON-GemStone36--Tests'
+	],
+	#comment : ''
+}
+
