@@ -1,0 +1,11 @@
+RwPlatformNestedProjectLoadComponentV2 {
+	#name : 'platform/gs3.6-',
+	#condition : [
+		'gs3.[6-]'
+	],
+	#packageNames : [
+		'Neo-JSON-GemStone36-',
+		'Neo-JSON-GemStone36--Tests'
+	],
+	#comment : ''
+}

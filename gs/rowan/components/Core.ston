@@ -1,11 +1,12 @@
 RwSimpleProjectLoadComponentV2 {
 	#name : 'Core',
 	#condition : 'common',
-	#projectNames : [ 
+	#projectNames : [
 		'OrderedDictionary'
 	],
 	#componentNames : [
 		'pharo/pharo',
+		'platform/gs3.6-',
 		'tests/tests'
 	],
 	#packageNames : [
