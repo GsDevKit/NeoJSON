@@ -20,8 +20,8 @@ My JSON representation is like this:
 
 "
 Class {
-	#name : #NeoJSONTestObject1,
-	#superclass : #Object,
+	#name : 'NeoJSONTestObject1',
+	#superclass : 'Object',
 	#instVars : [
 		'id',
 		'name',
@@ -32,7 +32,7 @@ Class {
 	#category : 'Neo-JSON-Tests'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 NeoJSONTestObject1 class >> example1 [
 	^ self new
 		id: 123;
@@ -43,7 +43,7 @@ NeoJSONTestObject1 class >> example1 [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 NeoJSONTestObject1 class >> neoJsonMapping: mapper [
 	mapper for: self do: [ :mapping |
 		mapping mapInstVars: #(id name).
@@ -53,6 +53,9 @@ NeoJSONTestObject1 class >> neoJsonMapping: mapper [
 	mapper for: DateAndTime customDo: [ :mapping |
 		mapping decoder: [ :string | DateAndTime fromString: string ].
 		mapping encoder: [ :dateAndTime | dateAndTime printString ] ].
+	mapper for: SmallDateAndTime customDo: [ :mapping |
+		mapping decoder: [ :string | DateAndTime fromString: string ].
+		mapping encoder: [ :dateAndTime | dateAndTime printString ] ].
 	mapper for: #ArrayOfPoints customDo: [ :mapping |
 		mapping listOfElementSchema: Point ].  
 	mapper mapAllInstVarsFor: Point.
@@ -60,7 +63,7 @@ NeoJSONTestObject1 class >> neoJsonMapping: mapper [
 		mapping listOfType: ByteArray ]
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 NeoJSONTestObject1 >> = anObject [
 	self == anObject
 		ifTrue: [ ^ true ].
@@ -76,57 +79,57 @@ NeoJSONTestObject1 >> = anObject [
 								and: [ bytes = anObject bytes ] ] ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 NeoJSONTestObject1 >> bytes [
 	^ bytes
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 NeoJSONTestObject1 >> bytes: byteArray [
 	bytes := byteArray
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 NeoJSONTestObject1 >> hash [
 	^ id hash bitXor: (name hash bitXor: (timestamp hash bitXor: (points hash bitXor: bytes hash)))
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 NeoJSONTestObject1 >> id [
 	^ id
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 NeoJSONTestObject1 >> id: integer [
 	id := integer
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 NeoJSONTestObject1 >> name [
 	^ name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 NeoJSONTestObject1 >> name: string [
 	name := string
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 NeoJSONTestObject1 >> points [
 	^ points
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 NeoJSONTestObject1 >> points: arrayOfPoints [
 	points := arrayOfPoints 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 NeoJSONTestObject1 >> timestamp [
 	^ timestamp
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 NeoJSONTestObject1 >> timestamp: dateAndTime [ 
 	timestamp := dateAndTime 
 ]

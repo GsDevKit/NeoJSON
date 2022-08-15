@@ -2,12 +2,12 @@
 I am NeoJSONReaderTests, a test suite for NeoJSONReader.
 "
 Class {
-	#name : #NeoJSONReaderTests,
-	#superclass : #TestCase,
+	#name : 'NeoJSONReaderTests',
+	#superclass : 'TestCase',
 	#category : 'Neo-JSON-Tests'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testAllowNil [
 	self 
 		should: [ 
@@ -30,7 +30,7 @@ NeoJSONReaderTests >> testAllowNil [
 		equals: (Array with: 1 @ 2 with: nil with: 3 @ -1).
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testArrayOfPoints [
 	| reader |
 	reader := [ :string | 
@@ -45,7 +45,7 @@ NeoJSONReaderTests >> testArrayOfPoints [
 	self assert: (reader value: '[ { } ]') equals: (Array with: Point new)
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testArrayOfPointsUsingNextListAs [
 	| reader |
 	reader := [ :string | 
@@ -57,7 +57,7 @@ NeoJSONReaderTests >> testArrayOfPointsUsingNextListAs [
 	self assert: (reader value: '[ { } ]') equals: (Array with: Point new) 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testAssociation [
 	| reader |
 	reader := [ :string | 
@@ -69,7 +69,7 @@ NeoJSONReaderTests >> testAssociation [
 	self assert: (reader value: '{}') equals: Association new
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testBooleans [
 	self assert: (NeoJSONReader on: 'true' readStream) next equals: true.
 	self assert: (NeoJSONReader on: 'false' readStream) next equals: false.
@@ -77,7 +77,7 @@ NeoJSONReaderTests >> testBooleans [
 	self should: [ (NeoJSONReader on: 'falsE' readStream) next ] raise: NeoJSONParseError.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testByteArray [
 	| reader |
 	reader := [ :string | 
@@ -89,23 +89,27 @@ NeoJSONReaderTests >> testByteArray [
 	self assert: (reader value: '[ ]') equals: ByteArray new
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testDate [
 	| reader |
 	reader := [ :input | 
 		(NeoJSONReader on: input readStream) 
 			for: Date customDo: [ :mapping |
-				mapping decoder: [ :string | Date fromString: string ] ];
+				mapping decoder: [ :string | Date fromISOString: string ] ];
+			for: SmallDate customDo: [ :mapping |
+				mapping decoder: [ :string | Date fromISOString: string ] ];
 			nextAs: Date ].
-	self assert: (reader value: ' "2012-06-08" ') equals: (Date fromString: '2012-06-08') 
+	self assert: (reader value: ' "2012-06-08" ') equals: (Date fromISOString: '2012-06-08')
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testDateAndTime [ 
 	| reader |
 	reader := [ :input | 
 		(NeoJSONReader on: input readStream) 
 			for: DateAndTime customDo: [ :mapping |
+				mapping decoder: [ :string | DateAndTime fromString: string ] ];
+			for: SmallDateAndTime customDo: [ :mapping |
 				mapping decoder: [ :string | DateAndTime fromString: string ] ];
 			nextAs: DateAndTime ].
 	self 
@@ -113,7 +117,7 @@ NeoJSONReaderTests >> testDateAndTime [
 		equals: (DateAndTime year: 2012 month: 2 day: 14 hour: 16 minute: 40 second: 18 offset: 1 hour)
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testFloats [
 	| reader |
 	reader := [ :string |
@@ -139,7 +143,7 @@ NeoJSONReaderTests >> testFloats [
 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testIntegers [
 	| reader |
 	reader := [ :string |
@@ -157,7 +161,7 @@ NeoJSONReaderTests >> testIntegers [
 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testLists [
 	| reader |
 	reader := [ :string |
@@ -172,7 +176,7 @@ NeoJSONReaderTests >> testLists [
 	self should: [ reader value: '[}' ] raise: NeoJSONParseError
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testMaps [
 	| reader |
 	reader := [ :string |
@@ -189,7 +193,7 @@ NeoJSONReaderTests >> testMaps [
 	self should: [ reader value: '{]' ] raise: NeoJSONParseError
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testNextStringAsHex [
 	| string |
 	string := (NeoJSONReader on: '"466F6F2062617221"' readStream)
@@ -202,7 +206,7 @@ NeoJSONReaderTests >> testNextStringAsHex [
 	self assert: string equals: 'Foo bar!'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testNonBMPCharacterDecoding [
 	"Characters not in the Basic Multilingual Plane are encoded as a UTF-16 surrogate pair"
 
@@ -212,14 +216,14 @@ NeoJSONReaderTests >> testNonBMPCharacterDecoding [
 	self assert: object equals: string
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testNull [
 	self assert: (NeoJSONReader on: 'null' readStream) next equals: nil.
 	self assert: (NeoJSONReader on: '	null ' readStream) next equals: nil.
 	self should: [ (NeoJSONReader on: '	nil ' readStream) next ] raise: NeoJSONParseError.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testOrderedCollection [
 	| json list |
 	json := '[ 1, 2, 3 ]'.
@@ -234,7 +238,7 @@ NeoJSONReaderTests >> testOrderedCollection [
 		equals: OrderedCollection
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testOrderedCollectionOfPoints [
 	| reader |
 	reader := [ :string | 
@@ -249,7 +253,7 @@ NeoJSONReaderTests >> testOrderedCollectionOfPoints [
 	self assert: (reader value: '[ { } ]') equals: (OrderedCollection with: Point new)
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testParseErrors [
 	self should: [ NeoJSONReader fromString: 'zero' ] raise: NeoJSONParseError.
 	self should: [ NeoJSONReader fromString: '#' ] raise: NeoJSONParseError.
@@ -260,7 +264,7 @@ NeoJSONReaderTests >> testParseErrors [
 	self should: [ (NeoJSONReader on: '[]"extra"' readStream) next; failIfNotAtEnd ] raise: NeoJSONParseError.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testPoint [
 	| reader |
 	reader := [ :string | 
@@ -268,7 +272,7 @@ NeoJSONReaderTests >> testPoint [
 	self should: [ reader value: '{"x":1,"y":2}' ] raise: NeoJSONMappingNotFound
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testPoint1 [
 	| reader |
 	reader := [ :string | 
@@ -281,7 +285,7 @@ NeoJSONReaderTests >> testPoint1 [
 	self assert: (reader value: '{}') equals: Point new
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testPoint2 [
 	| reader |
 	reader := [ :string | 
@@ -292,7 +296,7 @@ NeoJSONReaderTests >> testPoint2 [
 	self assert: (reader value: '{}') equals: Point new
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testPoint3 [
 	| reader |
 	reader := [ :string | 
@@ -304,7 +308,7 @@ NeoJSONReaderTests >> testPoint3 [
 	self assert: (reader value: '{}') equals: Point new
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testPointUsingAsString [
 	| point |
 	point := (NeoJSONReader on: '{"x":"1","y":"2"}' readStream)
@@ -329,7 +333,7 @@ NeoJSONReaderTests >> testPointUsingAsString [
 	self assert: point equals: 1 @ 2
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testPropertyNamesAsSymbols [
 	| json map |
 	json := '{ "x" : true, "y" : false, "key-1" : 1 }'.
@@ -342,7 +346,7 @@ NeoJSONReaderTests >> testPropertyNamesAsSymbols [
 	self assert: (map keys allSatisfy: [ :each | each isSymbol ])
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testSmallDictionary [
 	| json map smallDictionaryClass |
 	json := '{ "x" : true, "y" : false, "key-1" : 1 }'.
@@ -358,7 +362,7 @@ NeoJSONReaderTests >> testSmallDictionary [
 		equals: smallDictionaryClass
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testStrings [
 	| reader |
 	reader := [ :string |
@@ -388,7 +392,7 @@ NeoJSONReaderTests >> testStrings [
 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testSymbol [
 	| reader |
 	reader := [ :input | 
@@ -400,12 +404,14 @@ NeoJSONReaderTests >> testSymbol [
 	self assert: (reader value: ' "FOO-1" ') equals: #'FOO-1'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONReaderTests >> testTime [
 	| reader |
 	reader := [ :input | 
 		(NeoJSONReader on: input readStream) 
 			for: Time customDo: [ :mapping |
+				mapping decoder: [ :string | Time fromString: string ] ];
+			for: SmallTime customDo: [ :mapping |
 				mapping decoder: [ :string | Time fromString: string ] ];
 			nextAs: Time ].
 	self assert: (reader value: ' "14:30:08" ') equals: (Time hour: 14 minute: 30 second: 8)

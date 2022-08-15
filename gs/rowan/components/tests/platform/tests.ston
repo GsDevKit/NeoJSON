@@ -1,9 +1,10 @@
 RwSimpleNestedProjectLoadComponentV2 {
 	#name : 'tests/platform/tests',
 	#condition : 'common',
+	#projectNames : [ ],
 	#componentNames : [
 		'tests/platform/gs3.6-'
 	],
+	#packageNames : [ ],
 	#comment : ''
 }
-

@@ -18,6 +18,14 @@ Point class >> x: xInteger y: yInteger [
 	^ self basicNew setX: xInteger setY: yInteger
 ]
 
+{ #category : 'comparing' }
+Point >> = anotherObject [
+
+	^ self class = anotherObject class
+		and: [self x = anotherObject x
+		and: [self y = anotherObject y]]
+]
+
 { #category : 'printing' }
 Point >> asString [
 
@@ -29,6 +37,12 @@ Point >> asString [
 				nextPutAll: ' @ ';
 				print: self y;
 				nextPutAll: ')' ]
+]
+
+{ #category : 'comparing' }
+Point >> hash [
+
+	^ x bitXor: y
 ]
 
 { #category : 'printing' }

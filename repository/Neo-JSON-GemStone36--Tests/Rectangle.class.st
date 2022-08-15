@@ -20,6 +20,32 @@ Rectangle class >> origin: originPoint extent: extentPoint [
 		point: (originPoint x+ (extentPoint x max: 0)) @ (originPoint y + (extentPoint y max: 0)).
 ]
 
+{ #category : 'comparing' }
+Rectangle >> = anotherObject [
+
+	^ self class = anotherObject class
+		and: [self origin = anotherObject origin
+		and: [self corner = anotherObject corner]]
+]
+
+{ #category : 'accessing' }
+Rectangle >> corner [
+
+	^corner
+]
+
+{ #category : 'comparing' }
+Rectangle >> hash [
+
+	^ origin hash bitXor: corner hash
+]
+
+{ #category : 'accessing' }
+Rectangle >> origin [
+
+	^origin
+]
+
 { #category : 'printing' }
 Rectangle >> printOn: aStream [
 

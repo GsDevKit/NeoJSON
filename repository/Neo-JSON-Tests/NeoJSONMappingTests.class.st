@@ -2,12 +2,12 @@
 I am NeoJSONMappingTests, testing more exotic kinds of mapping constructs.
 "
 Class {
-	#name : #NeoJSONMappingTests,
-	#superclass : #TestCase,
+	#name : 'NeoJSONMappingTests',
+	#superclass : 'TestCase',
 	#category : 'Neo-JSON-Tests'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONMappingTests >> testDynamicTyping [
 	| data customMapping json result |
 	data := Array with: 'foo'->1 with: #('foo' 2).
@@ -18,7 +18,7 @@ NeoJSONMappingTests >> testDynamicTyping [
 			for: #AssocOrPair customDo: [ :mapping |
 				mapping
 					encoder: [ :x | 
-						x isArray 
+						(x isKindOf: Array )
 							ifTrue: [ Dictionary new at: 'type' put: 'pair'; at: 'key' put: x first; at: 'value' put: x second; yourself ] 
 							ifFalse: [ Dictionary new at: 'type' put: 'assoc'; at: 'key' put: x key; at: 'value' put: x value; yourself ] ];
 					decoder: [ :x |
@@ -34,7 +34,7 @@ NeoJSONMappingTests >> testDynamicTyping [
 	self assert: result equals: data
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONMappingTests >> testSymbolOrStringInstVarMapping [
 	| data out1 out2 result1 result2 |
 	data := Array with: 1@2 with: 3@4.
@@ -56,7 +56,7 @@ NeoJSONMappingTests >> testSymbolOrStringInstVarMapping [
 	self assert: result2 equals: data
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NeoJSONMappingTests >> testVirtualTransferObject [
 	| data customMapping extraJson json result |
 	data := NeoJSONObject new data: (Array with: 1@1 with: 2@2).
