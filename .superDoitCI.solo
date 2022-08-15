@@ -1,35 +1,15 @@
 #!/usr/bin/env superdoit_solo
-# Standard options are always present unless customoptions section is used
-#
-#options
-#{
-#  SuperDoitOptionalOptionWithNoArg long: 'help' short: 'h'.
-#  SuperDoitOptionalOptionWithNoArg long: 'debug' short: 'D'.
-#}
-#%
-# Example options section
-#
-#options
-#{
-#	SuperDoitOptionalOptionWithNoArg long: 'noarg'.
-#	SuperDoitOptionalOptionWithNoArg long: 'noarg' short: 'n'.
-#
-#	SuperDoitOptionalOptionWithRequiredArg long: 'optional'.
-#	SuperDoitOptionalOptionWithRequiredArg long: 'optional' default: 'default'.
-#	SuperDoitOptionalOptionWithRequiredArg long: 'optional' short: 'o'.
-#	SuperDoitOptionalOptionWithRequiredArg long: 'optional' short: 'o' default: 'default'.
-#
-#	SuperDoitRequiredOptionWithRequiredArg long: 'required'.
-#	SuperDoitRequiredOptionWithRequiredArg long: 'required' short: 'r'.
-#}
-#%
-#
+options
+{
+	SuperDoitOptionalOptionWithNoArg long: 'notPassing'.
+}
+%
 usage
 -----
 USAGE $basename [--help | -h] [--debug | -D]
 
 DESCRIPTION
-  <put your description here>
+  Run test suite for NeoJSON. Also used to run github ci runs.
 
 OPTIONS
   -h, --help                 display usage message
@@ -40,23 +20,44 @@ EXAMPLES
   $basename -h
   $basename --debug
   $basename -D
-  $basename  
+  $basename              # display detailed results for all tests
+  $basename --notPassing # display detailed results for only non passing tests 
 -----
+%
+specs
+[
+RwLoadSpecificationV2 {
+	#specName : 'GsTestStats',
+	#projectName : 'GsTestStats',
+	#gitUrl : 'https://github.com/dalehenrich/GsTestStats',
+	#revision : 'v1',
+	#projectSpecFile : 'rowan/project.ston',
+	#componentNames : [
+		'Samples'
+	],
+	#customConditionalAttributes : [],
+	#comment : 'test results tracking'
+}
+]
 %
 specUrls
 file:$GITHUB_WORKSPACE/gs/rowan/specs/NeoJSON.ston
 %
 doit
-	| testSuite testResult |
+	| testSuite runner reporter projectName |
+	projectName := 'NeoJSON'.
 	self preDoitSpecLoad: [:loadSpec |
-		loadSpec 
-			customConditionalAttributes: (loadSpec customConditionalAttributes, #('tests'));
-			projectsHome: '$GITHUB_WORKSPACE/..'
-		].
-	testSuite := (Rowan projectNamed: 'NeoJSON') testSuite.
-	testResult := testSuite run.
-	testResult printOn: self stdout.
-	(testResult hasFailures or: [ testResult hasErrors ])
-		ifTrue: [ self exitWithStatus: 1 ].
+		loadSpec projectName = projectName
+			ifTrue: [ 
+				loadSpec 
+					customConditionalAttributes: (loadSpec customConditionalAttributes, #('tests')) ].
+		loadSpec projectsHome: '$GITHUB_WORKSPACE/..' ].
+	testSuite := (Rowan projectNamed: projectName) testSuite.
+	runner := (Rowan globalNamed: 'GsTestStatsCITestRunner') runSuite: testSuite.
+	reporter := self notPassing
+		ifTrue: [ (Rowan globalNamed: 'GsTestStatsCITestReporterStdout') reportNotPassing: runner ]
+		ifFalse: [ (Rowan globalNamed: 'GsTestStatsCITestReporterStdout') report: runner ].
+	runner isSuccessful
+		ifFalse: [ self exitWithStatus: 1 ].
 	^ self noResult
 %
