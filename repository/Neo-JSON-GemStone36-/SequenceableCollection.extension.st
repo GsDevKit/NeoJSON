@@ -10,9 +10,3 @@ SequenceableCollection >> allButLastDo: block [
 	1 to: self size - 1 do:
 		[:index | block value: (self at: index)]
 ]
-
-{ #category : '*Neo-JSON-GemStone36-' }
-SequenceableCollection >> writeStream [
-
-	^WriteStream on: self.
-]

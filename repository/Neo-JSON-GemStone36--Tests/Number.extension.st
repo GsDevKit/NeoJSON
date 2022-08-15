@@ -7,9 +7,3 @@ Number >> @ y [
 
 	^Point x: self y: y
 ]
-
-{ #category : '*Neo-JSON-GemStone36--Tests' }
-Number >> hour [
-
-	^ Duration days: 0 hours: self minutes: 0 seconds: 0
-]
