@@ -135,12 +135,12 @@ NeoJSONReaderTests >> testFloats [
 	self assert: ((reader value: '-123e-6') closeTo: -123e-6).
 	self assert: ((reader value: '-123E6') closeTo: -123e6).
 	self assert: ((reader value: '-123E-6') closeTo: -123e-6).
-	self assert: ((reader value: '3.14159') closeTo: Float pi).
+"This isn't close. We're not going to pretend that it is.
+	self assert: ((reader value: '3.14159') closeTo: Float pi)."
 	self assert: ((reader value: '0.123e6') closeTo: 0.123e6).
 	self assert: ((reader value: '0.123e-6') closeTo: 0.123e-6).
 	self assert: ((reader value: '-0.123E6') closeTo: -0.123e6).
 	self assert: ((reader value: '-0.123E-6') closeTo: -0.123e-6).
-
 ]
 
 { #category : 'testing' }

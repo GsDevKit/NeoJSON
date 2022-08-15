@@ -7,3 +7,11 @@ Number >> @ y [
 
 	^Point x: self y: y
 ]
+
+{ #category : '*Neo-JSON-GemStone36--Tests' }
+Number >> closeTo: another [
+	"Things like #closeTo: are a sloppy sop to hide bad implementations.
+	 Don't use them. Don't encourage their use."
+
+	^self = another
+]
