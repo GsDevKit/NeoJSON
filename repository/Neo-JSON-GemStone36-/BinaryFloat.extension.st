@@ -8,6 +8,12 @@ BinaryFloat >> isFinite [
 ]
 
 { #category : '*Neo-JSON-GemStone36-' }
+BinaryFloat >> isNaN [
+
+	^ self _isNaN
+]
+
+{ #category : '*Neo-JSON-GemStone36-' }
 BinaryFloat >> isZero [
 
 	^self = 0.0d0

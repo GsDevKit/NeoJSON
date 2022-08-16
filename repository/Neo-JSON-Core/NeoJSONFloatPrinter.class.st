@@ -24,18 +24,18 @@ My public interface is in the printing protocol.
 
 "
 Class {
-	#name : #NeoJSONFloatPrinter,
-	#superclass : #Object,
+	#name : 'NeoJSONFloatPrinter',
+	#superclass : 'Object',
 	#instVars : [
 		'precision',
 		'lower',
 		'upper',
 		'base'
 	],
-	#category : #'Neo-JSON-Core'
+	#category : 'Neo-JSON-Core'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 NeoJSONFloatPrinter class >> lowPrecision [
 	^ self new
 		precision: 2;
@@ -44,7 +44,7 @@ NeoJSONFloatPrinter class >> lowPrecision [
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 NeoJSONFloatPrinter class >> scientificOnly [
 	^ self new
 		lower: 0;
@@ -52,22 +52,22 @@ NeoJSONFloatPrinter class >> scientificOnly [
 		yourself
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 NeoJSONFloatPrinter >> decimalPoint [
 	^ $.
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 NeoJSONFloatPrinter >> exponent [
 	^ $e
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 NeoJSONFloatPrinter >> infinite [
 	^ 'Inf'
 ]
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 NeoJSONFloatPrinter >> initialize [
 	super initialize.
 	base := 10.
@@ -76,29 +76,32 @@ NeoJSONFloatPrinter >> initialize [
 	upper := 1e6
 ]
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 NeoJSONFloatPrinter >> lower: number [
 	lower := number
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 NeoJSONFloatPrinter >> nan [
 	^ 'NaN'
 ]
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 NeoJSONFloatPrinter >> precision: numberOfDigits [
-	self assert: (numberOfDigits between: 1 and: 20).
+
+	(numberOfDigits between: 1 and: 20)
+		ifFalse: [ 
+			self error: 'Precision out of range (1..20), received ' , numberOfDigits printString ].
 	precision := numberOfDigits
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 NeoJSONFloatPrinter >> print: float [
 	^ String new: 16 streamContents: [ :out | 
 			self print: float on: out ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 NeoJSONFloatPrinter >> print: float decimalOn: stream [
 	stream print: float asInteger.
 	stream nextPut: self decimalPoint.
@@ -107,7 +110,7 @@ NeoJSONFloatPrinter >> print: float decimalOn: stream [
 		fractionOn: stream
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 NeoJSONFloatPrinter >> print: fractionPart fractionOn: stream [
 	| zeros |
 	zeros := 0. "leading zeros are significant, trailing zeros are not printed"
@@ -122,7 +125,7 @@ NeoJSONFloatPrinter >> print: fractionPart fractionOn: stream [
 				stream nextPut: digit asCharacterDigit ] ]
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 NeoJSONFloatPrinter >> print: float on: stream [
 	| int abs |
 	(float isZero or: [ float isFinite not ])
@@ -136,7 +139,7 @@ NeoJSONFloatPrinter >> print: float on: stream [
 		ifFalse: [ self print: abs scientificOn: stream ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 NeoJSONFloatPrinter >> print: float scientificOn: stream [
 	| exponent mantissa |
 	exponent := (float ln / base ln) floor.
@@ -147,13 +150,13 @@ NeoJSONFloatPrinter >> print: float scientificOn: stream [
 		print: exponent
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 NeoJSONFloatPrinter >> print: float signOn: stream [
 	float sign = -1
 		ifTrue: [ stream nextPut: $- ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 NeoJSONFloatPrinter >> print: float specialOn: stream [
 	float isZero
 		ifTrue: [ 
@@ -167,12 +170,12 @@ NeoJSONFloatPrinter >> print: float specialOn: stream [
 					stream nextPutAll: self infinite ] ]
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 NeoJSONFloatPrinter >> printFloat: float on: stream [
 	self print: float on: stream
 ]
 
-{ #category : #'initialize-release' }
+{ #category : 'initialize-release' }
 NeoJSONFloatPrinter >> upper: number [
 	upper := number
 ]
