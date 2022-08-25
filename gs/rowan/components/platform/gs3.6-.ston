@@ -3,6 +3,9 @@ RwPlatformNestedProjectLoadComponentV2 {
 	#condition : [
 		'gs3.[6-]'
 	],
+	#projectNames : [
+		'OrderedDictionary'
+	],
 	#packageNames : [
 		'Neo-JSON-GemStone36-'
 	],
