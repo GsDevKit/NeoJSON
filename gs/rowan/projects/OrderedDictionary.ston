@@ -1,7 +1,7 @@
 RwLoadSpecificationV2 {
 	#projectName : 'OrderedDictionary',
 	#gitUrl : 'git@github.com:GsDevKit/OrderedDictionary.git',
-	#revision : 'github-ci',
+	#revision : 'rowanize',
 	#projectSpecFile : 'rowan/project.ston',
 	#componentNames : [
 		'Core'
