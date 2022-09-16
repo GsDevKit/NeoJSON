@@ -14,11 +14,3 @@ Number >> adaptToPoint: rcvr andSend: selector [
 
 	^ rcvr perform: selector with: self @ self
 ]
-
-{ #category : '*Neo-JSON-GemStone36--Tests' }
-Number >> closeTo: another [
-	"Things like #closeTo: are a sloppy sop to hide bad implementations.
-	 Don't use them. Don't encourage their use."
-
-	^self = another
-]

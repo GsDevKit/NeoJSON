@@ -86,7 +86,7 @@ Point >> asString [
 			stream
 				nextPutAll: '(';
 				print: self x;
-				nextPutAll: ' @ ';
+				nextPutAll: '@';
 				print: self y;
 				nextPutAll: ')' ]
 ]
