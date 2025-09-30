@@ -1,0 +1,14 @@
+{
+	"category" : "Neo-JSON-Pharo-Examples",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "NeoJSONPharoExamples",
+	"pools" : [
+		 ],
+	"super" : "TestCase",
+	"type" : "normal" }

@@ -1,0 +1,24 @@
+{
+	"category" : "Neo-JSON-Pharo-Examples",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"MarketCurrency",
+		"BaseCurrency",
+		"MarketCurrencyLong",
+		"BaseCurrencyLong",
+		"MinTradeSize",
+		"MarketName",
+		"IsActive",
+		"Created",
+		"Notice",
+		"IsSponsored",
+		"LogoUrl" ],
+	"name" : "Market",
+	"pools" : [
+		 ],
+	"super" : "Object",
+	"type" : "normal" }

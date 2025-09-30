@@ -1,0 +1,3 @@
+constants
+nan
+	^ 'NaN'

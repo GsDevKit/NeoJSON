@@ -1,0 +1,15 @@
+{
+	"category" : "Neo-JSON-Pharo-Examples",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"url",
+		"fileName" ],
+	"name" : "Attachment",
+	"pools" : [
+		 ],
+	"super" : "Object",
+	"type" : "normal" }

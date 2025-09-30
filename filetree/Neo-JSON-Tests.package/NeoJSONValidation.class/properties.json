@@ -1,0 +1,15 @@
+{
+	"category" : "Neo-JSON-Tests",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"gitDirectory",
+		"logStream" ],
+	"name" : "NeoJSONValidation",
+	"pools" : [
+		 ],
+	"super" : "Object",
+	"type" : "normal" }
