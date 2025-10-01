@@ -10,5 +10,5 @@
 	"name" : "NeoJSONObject",
 	"pools" : [
 		 ],
-	"super" : "OrderedDictionary",
+	"super" : "Dictionary",
 	"type" : "normal" }

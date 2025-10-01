@@ -36,12 +36,12 @@ The first is special because it returns nil as soon as a key is missing. The sec
 	NeoJSONObject new atPath: #(one two three) put: 42; yourself.
 	NeoJSONObject new atPath: #(one two three) put: 42; atPath: #(one two three).
 
-The fact that I am an OrderedDictionary means to I maintain the order of keys. This is meant as a convenience feature only as the official JSON specification clearly states ""An object is an unordered set of name/value pairs"".
+I am an Dictionary. The official JSON specification clearly states ""An object is an unordered set of name/value pairs"".
 I work together with NeoJSONArray.
 "
 Class {
 	#name : #NeoJSONObject,
-	#superclass : #OrderedDictionary,
+	#superclass : #Dictionary,
 	#category : #'Neo-JSON-Core'
 }
 
