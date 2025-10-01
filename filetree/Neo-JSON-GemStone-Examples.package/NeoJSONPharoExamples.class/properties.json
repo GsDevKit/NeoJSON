@@ -1,0 +1,14 @@
+{
+	"category" : "Neo-JSON-Gemstone-Examples",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "NeoJSONGemStoneExamples",
+	"pools" : [
+		 ],
+	"super" : "TestCase",
+	"type" : "normal" }

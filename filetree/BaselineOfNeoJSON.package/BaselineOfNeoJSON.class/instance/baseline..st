@@ -17,4 +17,13 @@ baseline: spec
 				package: 'Neo-JSON-Pharo-Examples' with: [ spec requires: #('Neo-JSON-Core') ];
 				group: 'Core' with: #('Neo-JSON-Core' 'Neo-JSON-Pharo-Core');
 				group: 'Tests' with: #('Neo-JSON-Tests' 'Neo-JSON-Pharo-Tests');
-				group: 'examples' with: #('Neo-JSON-Pharo-Examples') ].
+				group: 'Examples' with: #('Neo-JSON-Pharo-Examples') ].
+	spec
+		for: #gemstone
+		do: [ spec
+				package: 'Neo-JSON-GemStone-Core' with: [ spec requires: #('Neo-JSON-Core') ];
+				package: 'Neo-JSON-GemStone-Tests' with: [ spec requires: #('Neo-JSON-Tests') ];
+				package: 'Neo-JSON-GemStone-Examples' with: [ spec requires: #('Neo-JSON-Core') ];
+				group: 'Core' with: #('Neo-JSON-Core' 'Neo-JSON-GemStone-Core');
+				group: 'Tests' with: #('Neo-JSON-Tests' 'Neo-JSON-GemStone-Tests');
+				group: 'Examples' with: #('Neo-JSON-GemStone-Examples') ].

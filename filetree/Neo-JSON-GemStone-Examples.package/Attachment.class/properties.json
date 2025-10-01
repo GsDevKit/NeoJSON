@@ -1,0 +1,15 @@
+{
+	"category" : "Neo-JSON-Gemstone-Examples",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"url",
+		"fileName" ],
+	"name" : "Attachment",
+	"pools" : [
+		 ],
+	"super" : "Object",
+	"type" : "normal" }
