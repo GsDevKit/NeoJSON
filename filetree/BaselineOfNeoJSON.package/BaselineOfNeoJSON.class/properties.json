@@ -1,0 +1,14 @@
+{
+	"category" : "BaselineOfNeoJSON",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "BaselineOfNeoJSON",
+	"pools" : [
+		 ],
+	"super" : "BaselineOf",
+	"type" : "normal" }

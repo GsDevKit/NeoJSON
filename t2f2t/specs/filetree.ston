@@ -1,0 +1,10 @@
+RwLoadSpecificationV2 {
+	#specName : 'filetree',
+	#projectName : 't2f2tMeta',
+	#diskUrl : 'file:///home/tukan/Libraries/3rdPartyLibraries/neoJSON',
+	#projectSpecFile : 't2f2t/filetree.ston',
+	#componentNames : [
+		'Core'
+	],
+	#comment : ''
+}

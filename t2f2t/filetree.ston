@@ -1,0 +1,11 @@
+RwProjectSpecificationV2 {
+	#specName : 'filetree',
+	#projectSpecPath : 't2f2t',
+	#componentsPath : 't2f2t/components',
+	#packagesPath : 'filetree',
+	#projectsPath : 't2f2t/projects',
+	#specsPath : 't2f2t/specs',
+	#packageFormat : 'filetree',
+	#packageConvention : 'Monticello',
+	#comment : ''
+}

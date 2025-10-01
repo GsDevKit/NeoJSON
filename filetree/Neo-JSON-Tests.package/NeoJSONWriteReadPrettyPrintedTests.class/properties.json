@@ -1,0 +1,14 @@
+{
+	"category" : "Neo-JSON-Tests",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "NeoJSONWriteReadPrettyPrintedTests",
+	"pools" : [
+		 ],
+	"super" : "NeoJSONWriteReadTests",
+	"type" : "normal" }

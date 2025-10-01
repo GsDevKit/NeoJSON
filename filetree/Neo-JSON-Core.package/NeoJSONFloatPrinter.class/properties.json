@@ -1,0 +1,17 @@
+{
+	"category" : "Neo-JSON-Core",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"precision",
+		"lower",
+		"upper",
+		"base" ],
+	"name" : "NeoJSONFloatPrinter",
+	"pools" : [
+		 ],
+	"super" : "Object",
+	"type" : "normal" }
