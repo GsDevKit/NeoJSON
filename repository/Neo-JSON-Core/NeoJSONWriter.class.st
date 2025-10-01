@@ -204,7 +204,7 @@ NeoJSONWriter >> indentedDo: block [
 { #category : #'initialize-release' }
 NeoJSONWriter >> initialize [
 	super initialize.
-	self newLine: OSPlatform current lineEnding.
+	self newLine: String lf.
 	self prettyPrint: false.
 	self asciiOnly: false.
 	self writeNil: false.
