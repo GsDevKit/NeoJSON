@@ -236,7 +236,7 @@ NeoJSONObject >> atPath: keyCollection add: newValue [
 	| target |
 	keyCollection ifEmpty: [ ^ self ].
 	target := self.
-	keyCollection allButLastDo: [ :each |
+	keyCollection allButLast do: [ :each |
 		target := target 
 			at: each
 			ifAbsent: [ target at: each add: target species new ] ].
@@ -251,7 +251,7 @@ NeoJSONObject >> atPath: keyCollection put: newValue [
 	| target |
 	keyCollection ifEmpty: [ ^ self ].
 	target := self.
-	keyCollection allButLastDo: [ :each |
+	keyCollection allButLast do: [ :each |
 		target := target 
 			at: each
 			ifAbsent: [ target at: each put: target species new ] ].
@@ -328,7 +328,7 @@ NeoJSONObject >> removeAtPath: keyCollection [
 	| target |
 	keyCollection ifEmpty: [ ^ self ].
 	target := self.
-	keyCollection allButLastDo: [ :each |
+	keyCollection allButLast do: [ :each |
 		target := target at: each ifAbsent: [ ^ self ] ].
 	^ target removeKey: keyCollection last
 ]

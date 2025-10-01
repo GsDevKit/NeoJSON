@@ -7,7 +7,7 @@ atPath: keyCollection add: newValue
 	| target |
 	keyCollection ifEmpty: [ ^ self ].
 	target := self.
-	keyCollection allButLastDo: [ :each |
+	keyCollection allButLast do: [ :each |
 		target := target 
 			at: each
 			ifAbsent: [ target at: each add: target species new ] ].
