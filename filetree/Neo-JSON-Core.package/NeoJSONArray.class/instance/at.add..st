@@ -1,5 +1,5 @@
 adding
 at: index add: object
-	^ index = '-'
+	^ index = #'-'
 		ifTrue: [ self addLast: object ]
-		ifFalse: [ self insert: object before: index ]
+		ifFalse: [ self add: object before: index ]
