@@ -1,6 +1,5 @@
 testing
 testTime
-testTime
 	| timeClassType hourFormat writer |
 	timeClassType := (Smalltalk globals at: #'SmallTime' ifAbsent: [ nil ]) ifNil: [ Time ] ifNotNil: [ SmallTime ].
 	"Hours could be in 12-hour format or 24-hour format"
