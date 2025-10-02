@@ -1,4 +1,5 @@
 testing
+testStrings
    | writer |
    writer := [ :object | 
      String streamContents: [ :stream |
