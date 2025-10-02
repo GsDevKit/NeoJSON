@@ -1,10 +1,11 @@
 testing
 testDateAndTime 
-	| writer |
+	| dateAndTimeClassType writer |
+	dateAndTimeClassType := (Smalltalk globals at: #'SmallTime' ifAbsent: [ nil ]) ifNil: [ DateAndTime ] ifNotNil: [ SmallDateAndTime ].
 	writer := [ :object | 
 		String streamContents: [ :stream |
 			(NeoJSONWriter on: stream) 
-				for: DateAndTime customDo: [ :mapping |
+				for: SmallDateAndTime customDo: [ :mapping |
 					mapping encoder: [ :dateAndTime | dateAndTime printString ] ];
 				nextPut: object ] ].
 	self 
