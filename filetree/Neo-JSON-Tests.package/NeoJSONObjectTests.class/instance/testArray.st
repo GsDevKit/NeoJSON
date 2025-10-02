@@ -1,6 +1,6 @@
 testing
 testArray
-
+	| jsonArray array |
 	jsonArray := '[-2,1,2,3]'.
 	array := NeoJSONObject fromString: jsonArray.
 	self assert: array asString equals: jsonArray.

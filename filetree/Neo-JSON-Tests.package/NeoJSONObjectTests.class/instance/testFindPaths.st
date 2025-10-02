@@ -1,21 +1,21 @@
 testing
 testFindPaths
 	| json paths |
-	json := self exampleJSONSchema.
+	json := self class exampleJSONSchema.
 	
-	paths := json findPaths: [ :object | object isDictionary and: [ object includesKey: '$anchor' ] ].
+	paths := json findPaths: [ :object | object isDictionary and: [ object includesKey: #'$anchor' ] ].
 	self deny: paths isEmpty.
-	self assert: paths asArray equals: #((properties street_address) ('$defs' country)).
-	self assert: ((json atPath: paths first) at: '$anchor') equals: 'street_address'.
-	self assert: ((json atPath: paths second) at: '$anchor') equals: 'country'.
+	self assert: paths asArray equals: #((properties street_address) (#'$defs' #'country')).
+	self assert: ((json atPath: paths first) at: #'$anchor') equals: 'street_address'.
+	self assert: ((json atPath: paths second) at: #'$anchor') equals: 'country'.
 			
-	paths := json findPaths: [ :object | object isDictionary and: [ (object at: 'foo') = 'bar' ] ].
+	paths := json findPaths: [ :object | object isDictionary and: [ (object at: #'foo') = 'bar' ] ].
 	self assert: paths isEmpty.
 	
-	paths := json findPaths: [ :object | object isDictionary and: [ object includesKey: #type ] ].
+	paths := json findPaths: [ :object | object isDictionary and: [ object includesKey: #'type' ] ].
 	self deny: paths isEmpty.
 	paths do: [ :path |
-		self assert: (#(string object) includes: ((json atPath: path) at: #type)) ].
+		self assert: (#('string' 'object') includes: ((json atPath: path) at: #'type')) ].
 		
 	paths := json findPaths: [ :_ | true ].
 	paths do: [ :each | 
