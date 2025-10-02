@@ -6,7 +6,7 @@ testMultiInstances
 	| data json |
 	
 	data := (1 to: 10) collect: [ :each |
-		{ #number -> each } asDictionary ].
+		{ 'number' -> each } asDictionary ].
 	
 	json := String streamContents: [ :out |
 		(NeoJSONWriter on: out) nextPutAll: data ].
