@@ -3,8 +3,8 @@ SmalltalkCISpec {
         SCIMetacelloLoadSpec {
             #baseline : 'NeoJSON',
             #directory : 'filetree',
-            #load : [ 'Tests' ],
-            #platforms : [ #gemstone]
+            #load : [ 'Core', 'Tests' ],
+            #platforms : [ #gemstone ]
         }
     ]
 }

@@ -1,0 +1,16 @@
+SmalltalkCISpec {
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'NeoJSON',
+      #directory : '../repository',
+      #load : [ 'build' ],
+      #platforms : [ #pharo ]
+    }
+  ],
+  #testing : {
+    #coverage : {
+      #packages : [ 'Neo-JSON*' ],
+      #format: #lcov
+    }
+  }
+}
