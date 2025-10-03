@@ -1,0 +1,10 @@
+SmalltalkCISpec {
+    #loading : [
+        SCIMetacelloLoadSpec {
+            #baseline : 'NeoJSON',
+            #directory : 'filetree',
+            #load : [ 'Tests' ],
+            #platforms : [ #gemstone]
+        }
+    ]
+}
