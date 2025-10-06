@@ -1,8 +1,6 @@
 testing
 testFindPaths
-	| json paths testingArray |
 	json := self class exampleJSONSchema.
-	testingArray := #((#'properties' #'street_address') (#'$defs' #'country')).
 	
 	paths := json findPaths: [ :object | object isDictionary and: [ object includesKey: #'$anchor' ] ].
 	self deny: paths isEmpty.
@@ -24,3 +22,4 @@ testFindPaths
 	paths := json findPaths: [ :_ | true ].
 	paths do: [ :each | 
 		self assert: (json atPath: each) notNil ]
+
