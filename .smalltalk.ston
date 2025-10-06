@@ -1,9 +1,10 @@
 SmalltalkCISpec {
-  #loading : [
-    SCIMetacelloLoadSpec {
-      #baseline : 'NeoJSON',
-      #directory : 'repository',
-      #platforms : [ #pharo ]
-    }
-  ]
+    #loading : [
+        SCIMetacelloLoadSpec {
+            #baseline : 'NeoJSON',
+            #directory : 'filetree',
+            #load : [ 'Core', 'Tests' ],
+            #platforms : [ #gemstone ]
+        }
+    ]
 }
