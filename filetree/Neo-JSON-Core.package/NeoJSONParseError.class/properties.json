@@ -1,0 +1,14 @@
+{
+	"category" : "Neo-JSON-Core",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "NeoJSONParseError",
+	"pools" : [
+		 ],
+	"super" : "Error",
+	"type" : "normal" }

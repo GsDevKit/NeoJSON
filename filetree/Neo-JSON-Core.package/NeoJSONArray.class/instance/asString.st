@@ -1,0 +1,4 @@
+print
+asString
+
+	^self printString

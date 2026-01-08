@@ -1,0 +1,11 @@
+RwProjectSpecificationV2 {
+	#specName : 'tonel',
+	#projectSpecPath : 't2f2t',
+	#componentsPath : 't2f2t/components',
+	#packagesPath : 'repository',
+	#projectsPath : 't2f2t/projects',
+	#specsPath : 't2f2t/specs',
+	#packageFormat : 'tonel',
+	#packageConvention : 'Monticello',
+	#comment : ''
+}
