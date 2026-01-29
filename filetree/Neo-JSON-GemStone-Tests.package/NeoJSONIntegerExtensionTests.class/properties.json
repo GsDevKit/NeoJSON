@@ -1,0 +1,13 @@
+{
+	"category" : "Neo-JSON-GemStone-Tests",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [],
+	"name" : "NeoJSONIntegerExtensionTests",
+	"pools" : [
+		 ],
+	"super" : "TestCase",
+	"type" : "normal" }
