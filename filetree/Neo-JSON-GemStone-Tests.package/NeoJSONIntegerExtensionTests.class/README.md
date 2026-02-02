@@ -1,0 +1,1 @@
+NeoJSONIntegerExtensionTests tests Integer-related extensions
