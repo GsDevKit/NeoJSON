@@ -6,6 +6,7 @@ decimalDigitLength
 	"100000000 decimalDigitLength >>> 9"
 	"SmallInteger maxVal decimalDigitLength >>> 19"
 
+  self negative ifTrue: [^self negated decimalDigitLength].
 	^self < 10000
 		ifTrue:
 			[self < 100
