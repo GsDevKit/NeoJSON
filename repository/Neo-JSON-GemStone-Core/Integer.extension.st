@@ -1,25 +1,25 @@
-Extension { #name : 'Integer' }
+Extension { #name : #'Integer' }
 
-{ #category : '*neo-json-gemstone-core' }
+{ #category : #'*neo-json-gemstone-core' }
 Integer >> asCharacterDigit [
 
 	^ Character digitValue: self
 ]
 
-{ #category : '*neo-json-gemstone-core' }
+{ #category : #'*neo-json-gemstone-core' }
 Integer >> digitAt: anExponent base: base [
 
 	^ self // (base raisedToInteger: anExponent - 1) \\ base
 
 ]
 
-{ #category : '*neo-json-gemstone-core' }
+{ #category : #'*neo-json-gemstone-core' }
 Integer >> isPowerOfTwo [
     "Return true if the receiver is an integral power of two."
     ^ self ~= 0 and: [ (self bitAnd: self-1) = 0 ]
 ]
 
-{ #category : '*neo-json-gemstone-core' }
+{ #category : #'*neo-json-gemstone-core' }
 Integer >> numberOfDigitsInBase: b [
 	"Return how many digits are necessary to print this number in base b.
 	This does not count any place for minus sign, radix prefix or whatever.
@@ -51,7 +51,7 @@ Integer >> numberOfDigitsInBase: b [
 		ifFalse: [total + 1]
 ]
 
-{ #category : '*neo-json-gemstone-core' }
+{ #category : #'*neo-json-gemstone-core' }
 Integer >> print: positiveNumberString on: aStream prefix: prefix length: minimum padded: zeroFlag [
 	"Return a String based on concatenation of positiveNumberString with prefix then padded by 0 is zeroFlag is set for a minimum length."
 
@@ -67,7 +67,7 @@ Integer >> print: positiveNumberString on: aStream prefix: prefix length: minimu
 	aStream nextPutAll: positiveNumberString
 ]
 
-{ #category : '*neo-json-gemstone-core' }
+{ #category : #'*neo-json-gemstone-core' }
 Integer >> printOn: aStream base: base length: minimum padded: zeroFlag [
 	"Return a String representation of this number in base b with a minimum length and padded by 0 if zeroFlag is set"
 

@@ -1,6 +1,6 @@
 Class {
-	#name : 'Attachment',
-	#superclass : 'Object',
+	#name : #'Attachment',
+	#superclass : #'Object',
 	#instVars : [
 		'url',
 		'fileName'
@@ -8,12 +8,12 @@ Class {
 	#category : 'Neo-JSON-GemStone-Examples'
 }
 
-{ #category : 'accessing' }
+{ #category : #'accessing' }
 Attachment >> fileName: anObject [
 	fileName := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #'accessing' }
 Attachment >> url: anObject [
 	url := anObject
 ]

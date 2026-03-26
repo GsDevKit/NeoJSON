@@ -1,10 +1,10 @@
 Class {
-	#name : 'NeoJSONGemStoneExamples',
-	#superclass : 'TestCase',
+	#name : #'NeoJSONGemStoneExamples',
+	#superclass : #'TestCase',
 	#category : 'Neo-JSON-GemStone-Examples'
 }
 
-{ #category : 'tests' }
+{ #category : #'tests' }
 NeoJSONGemStoneExamples >> testAccessingTheNewYorkPublicLibrary [
 
 	| client reader data networkStream |
@@ -19,7 +19,7 @@ NeoJSONGemStoneExamples >> testAccessingTheNewYorkPublicLibrary [
 	data
 ]
 
-{ #category : 'tests' }
+{ #category : #'tests' }
 NeoJSONGemStoneExamples >> testAttachmentsExample [
 	| collectionOne json |
 	"Let's create a collection of two instances:"
@@ -52,7 +52,7 @@ NeoJSONGemStoneExamples >> testAttachmentsExample [
 		nextAs: #CollectionOfAttachments
 ]
 
-{ #category : 'tests' }
+{ #category : #'tests' }
 NeoJSONGemStoneExamples >> testBittrexLitecoinAsDictionary [ 
 	ZnClient new 
 		url: 'https://bittrex.com/api/v1.1/public/getmarketSummary?market=BTC-LTC';
@@ -60,11 +60,11 @@ NeoJSONGemStoneExamples >> testBittrexLitecoinAsDictionary [
 		contentReader: [ :entity | |reader|
 			reader := (NeoJSONReader on: entity readStream).
 			reader next ];
-	   get.
+		get.
 	
 ]
 
-{ #category : 'tests' }
+{ #category : #'tests' }
 NeoJSONGemStoneExamples >> testBittrexLitecoinAsDomainObjects [
 	ZnClient new 
 		url: 'https://bittrex.com/api/v1.1/public/getmarkets';
@@ -72,23 +72,23 @@ NeoJSONGemStoneExamples >> testBittrexLitecoinAsDomainObjects [
 		accept: ZnMimeType applicationJson;
 		contentReader: [ :entity | |reader|
 			reader := (NeoJSONReader on: entity readStream).
-			reader for: BittrexResponse do: [:m| 
+			reader for: BittrexResponse do: [ :m |
 				m mapInstVar: #success.
 				m mapInstVar: #message.
 				(m mapInstVar: #result) valueSchema: #ArrayOfMarkets].
 			reader for: #ArrayOfMarkets customDo: [ :mapping | mapping listOfElementSchema: Market ].
-			reader mapInstVarsFor: Market. 
-	      reader nextAs: BittrexResponse ];
-	   get
+			reader mapInstVarsFor: Market.
+			reader nextAs: BittrexResponse ];
+		get
 ]
 
-{ #category : 'tests' }
+{ #category : #'tests' }
 NeoJSONGemStoneExamples >> testDoomtownDBCards [
 
 	NeoJSONReader fromString: 'http://dtdb.co/api/cards/' asUrl retrieveContents
 ]
 
-{ #category : 'tests' }
+{ #category : #'tests' }
 NeoJSONGemStoneExamples >> testFeed [
 	| json |
 	json := ZnClient new
@@ -102,13 +102,13 @@ NeoJSONGemStoneExamples >> testFeed [
 	json 
 ]
 
-{ #category : 'tests' }
+{ #category : #'tests' }
 NeoJSONGemStoneExamples >> testGetWorldCapitals [
 	((NeoJSONReader fromString: (ZnEasy get: 'http://api.geonames.org/countryInfoJSON' username: 'demo' password: '') contents) at: #geonames)
 		collect: [ :d | d at: #capital ]
 ]
 
-{ #category : 'tests' }
+{ #category : #'tests' }
 NeoJSONGemStoneExamples >> testGoogleMapsAPI [
 
 	ZnClient new
@@ -117,7 +117,7 @@ NeoJSONGemStoneExamples >> testGoogleMapsAPI [
 		get
 ]
 
-{ #category : 'tests' }
+{ #category : #'tests' }
 NeoJSONGemStoneExamples >> testParsingUserAgentStrings [
 	ZnClient new
 		http;
@@ -128,7 +128,7 @@ NeoJSONGemStoneExamples >> testParsingUserAgentStrings [
 		get
 ]
 
-{ #category : 'tests' }
+{ #category : #'tests' }
 NeoJSONGemStoneExamples >> testStackOverflowInfo [
 
 	ZnClient new

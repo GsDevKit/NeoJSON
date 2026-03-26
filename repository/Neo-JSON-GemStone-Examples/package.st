@@ -1,1 +1,1 @@
-Package { #name : 'Neo-JSON-GemStone-Examples' }
+Package { #name : #'Neo-JSON-GemStone-Examples' }

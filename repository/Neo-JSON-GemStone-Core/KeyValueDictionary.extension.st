@@ -1,6 +1,6 @@
-Extension { #name : 'KeyValueDictionary' }
+Extension { #name : #'KeyValueDictionary' }
 
-{ #category : '*neo-json-gemstone-core' }
+{ #category : #'*neo-json-gemstone-core' }
 KeyValueDictionary class >> newFromPairs: anArray [
 	"Answer an instance of me associating (anArray at:i) to (anArray at: i+i)
 	 for each odd i.  anArray must have an even number of entries.
@@ -15,7 +15,7 @@ KeyValueDictionary class >> newFromPairs: anArray [
 
 ]
 
-{ #category : '*neo-json-gemstone-core' }
+{ #category : #'*neo-json-gemstone-core' }
 KeyValueDictionary >> neoJsonOn: neoJSONWriter [
 	neoJSONWriter writeMap: self
 ]

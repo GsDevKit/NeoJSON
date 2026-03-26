@@ -1,6 +1,6 @@
-Extension { #name : 'SmallInteger' }
+Extension { #name : #'SmallInteger' }
 
-{ #category : '*neo-json-gemstone-core' }
+{ #category : #'*neo-json-gemstone-core' }
 SmallInteger >> decimalDigitLength [
 	"Answer the number of digits printed out in base 10.
 	Note that this only works for positive SmallIntegers up to 64-bits."
@@ -40,7 +40,7 @@ SmallInteger >> decimalDigitLength [
 
 ]
 
-{ #category : '*neo-json-gemstone-core' }
+{ #category : #'*neo-json-gemstone-core' }
 SmallInteger >> numberOfDigitsInBase: b [
 	"Return how many digits are necessary to print this number in base b.
 	Mostly same as super but an optimized version for base 10 case"
@@ -51,7 +51,7 @@ SmallInteger >> numberOfDigitsInBase: b [
 
 ]
 
-{ #category : '*neo-json-gemstone-core' }
+{ #category : #'*neo-json-gemstone-core' }
 SmallInteger >> printOn: stream base: base length: minimumLength padded: padWithZeroes [
 	"Return a String representation of this number in base b with a minimum length and padded by 0 if zeroFlag is set"
 
@@ -86,7 +86,7 @@ SmallInteger >> printOn: stream base: base length: minimumLength padded: padWith
 		divisor := divisor // base ]
 ]
 
-{ #category : '*neo-json-gemstone-core' }
+{ #category : #'*neo-json-gemstone-core' }
 SmallInteger >> printOn: aStream base: b nDigits: n [
 	"Append a representation of this number in base b on aStream using nDigits.
 	self must be positive."

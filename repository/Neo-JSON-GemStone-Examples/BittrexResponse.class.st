@@ -1,6 +1,6 @@
 Class {
-	#name : 'BittrexResponse',
-	#superclass : 'Object',
+	#name : #'BittrexResponse',
+	#superclass : #'Object',
 	#instVars : [
 		'success',
 		'message',

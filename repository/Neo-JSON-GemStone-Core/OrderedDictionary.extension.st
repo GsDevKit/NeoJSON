@@ -1,6 +1,6 @@
-Extension { #name : 'OrderedDictionary' }
+Extension { #name : #'OrderedDictionary' }
 
-{ #category : '*neo-json-gemstone-core' }
+{ #category : #'*neo-json-gemstone-core' }
 OrderedDictionary >> neoJsonOn: neoJSONWriter [
 	neoJSONWriter writeMap: self
 ]

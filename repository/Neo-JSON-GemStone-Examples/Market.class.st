@@ -1,6 +1,6 @@
 Class {
-	#name : 'Market',
-	#superclass : 'Object',
+	#name : #'Market',
+	#superclass : #'Object',
 	#instVars : [
 		'MarketCurrency',
 		'BaseCurrency',
