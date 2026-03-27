@@ -20,7 +20,13 @@ baseline: spec
 				group: 'Examples' with: #('Neo-JSON-Pharo-Examples') ].
 	spec
 		for: #gemstone
-		do: [ spec
+		do: [ 
+			spec
+				baseline: 'OrderedDictionary'
+					with: [ spec
+								loads: #('Core');
+								repository: 'github://GsDevKit/OrderedDictionary:master/repository' ].
+			spec
 				package: 'Neo-JSON-GemStone-Core' with: [ spec requires: #('Neo-JSON-Core') ];
 				package: 'Neo-JSON-GemStone-Tests' with: [ spec requires: #('Neo-JSON-Tests') ];
 				package: 'Neo-JSON-GemStone-Examples' with: [ spec requires: #('Neo-JSON-Core') ];
