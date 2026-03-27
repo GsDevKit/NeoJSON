@@ -1,5 +1,6 @@
 testing
 testFindPaths
+	| json paths |
 	json := self class exampleJSONSchema.
 	
 	paths := json findPaths: [ :object | object isDictionary and: [ object includesKey: #'$anchor' ] ].
