@@ -1,10 +1,16 @@
 SmalltalkCISpec {
+    #name : 'NeoJSON for GemStone',
     #loading : [
         SCIMetacelloLoadSpec {
             #baseline : 'NeoJSON',
             #directory : 'filetree',
             #load : [ 'Core', 'Tests' ],
-            #platforms : [ #gemstone ]
+            #onConflict : #useIncoming,
+            #onWarningLog : true,
+            #platforms : [ #gemstone ],
+            #repository : 'https://github.com/GsDevKit/NeoJSON',
+            #useLatestMetacello : true
         }
     ]
+}
 }

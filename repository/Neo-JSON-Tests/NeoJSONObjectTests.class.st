@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : 'accessing' }
-NeoJSONObjectTests >> exampleJSONSchema [
+NeoJSONObjectTests class >> exampleJSONSchema [
 	^ NeoJSONObject fromString: '{
   "$id" : "https://example.com/schemas/address",
   "type" : "object",
@@ -122,7 +122,7 @@ NeoJSONObjectTests >> testCRUD [
 { #category : 'testing' }
 NeoJSONObjectTests >> testFindPath [
 	| json path |
-	json := self exampleJSONSchema.
+	json := self class exampleJSONSchema.
 	
 	path := json findPath: [ :object | object isDictionary and: [ (object at: '$anchor') = 'street_address' ] ].
 	self deny: path isNil.
@@ -146,7 +146,7 @@ NeoJSONObjectTests >> testFindPath [
 { #category : 'testing' }
 NeoJSONObjectTests >> testFindPaths [
 	| json paths |
-	json := self exampleJSONSchema.
+	json := self class exampleJSONSchema.
 	
 	paths := json findPaths: [ :object | object isDictionary and: [ object includesKey: '$anchor' ] ].
 	self deny: paths isEmpty.

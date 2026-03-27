@@ -1,3 +1,3 @@
-*neo-json-pharo-core
+*neo-json-core
 neoJsonOn: neoJSONWriter
 	neoJSONWriter writeMap: self
